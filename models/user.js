@@ -26,6 +26,9 @@ module.exports = (sequelize, Sequelize) => {
         url_imagen: {
             type: Sequelize.STRING,
         },
+        verification_code: {
+            type: Sequelize.STRING,
+        },
         estado: {
             type: Sequelize.BOOLEAN,
         }
