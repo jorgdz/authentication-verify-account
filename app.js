@@ -36,6 +36,7 @@ app.use((req, res, next) => {
   app.locals.message = req.flash('message')
   app.locals.success = req.flash('success')
   app.locals.error = req.flash('error')
+  app.locals.errorsValidator = req.flash('errorsValidator')
   next()
 })
 

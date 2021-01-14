@@ -31,6 +31,9 @@ module.exports = (sequelize, Sequelize) => {
         },
         estado: {
             type: Sequelize.BOOLEAN,
+        },
+        password_reset_code: {
+            type: Sequelize.STRING,
         }
     })
 

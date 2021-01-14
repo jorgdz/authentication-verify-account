@@ -277,3 +277,9 @@ input[type=text]:placeholder {
   background-color: rgb(180, 24, 24);
   color: white;
 }
+
+.alert-success {
+  padding: 1em;
+  background-color: rgb(31, 170, 61);
+  color: white;
+}
