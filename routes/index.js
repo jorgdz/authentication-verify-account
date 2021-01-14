@@ -105,6 +105,7 @@ router.post('/register', validatorRegister, async function (req, res, next) {
   if (!errors.isEmpty()) {
     console.log(errors.array())
 
+    req.flash('old', req.body)
     req.flash('errorsValidator', errors.array())
     res.redirect('/register')
   } else {
@@ -202,8 +203,16 @@ router.post('/password/change/:id', validatorReset, async function (req, res, ne
   }
 })
 
-router.post('/login', async function (req, res, next) {
-  res.send('Suave loco, aún no está terminado.')
+router.post('/login', validatorForgot, async function (req, res, next) {
+  const errors = validationResult(req)
+
+  if(!errors.isEmpty()) {
+    req.flash('old', req.body)
+    req.flash('errorsValidator', errors.array())
+    res.redirect('/login')
+  } else {
+    res.send('Todavia no está :p')
+  }
 })
 
 module.exports = router;

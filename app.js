@@ -3,7 +3,10 @@ var express = require('express')
 var path = require('path')
 var cookieParser = require('cookie-parser')
 var logger = require('morgan')
+
 const hbs = require('hbs')
+require('./lib/helper-hbs')
+
 const session = require('express-session')
 const flash = require('connect-flash')
 
@@ -37,6 +40,7 @@ app.use((req, res, next) => {
   app.locals.success = req.flash('success')
   app.locals.error = req.flash('error')
   app.locals.errorsValidator = req.flash('errorsValidator')
+  app.locals.old = req.flash('old')
   next()
 })
 
