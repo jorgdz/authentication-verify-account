@@ -2,29 +2,29 @@
   <div id="formContent">
    
     {{#if success}}
-        <div class="alert-success" role="alert">
-            {{success}}
-        </div>
+      <div class="alert-success" role="alert">
+        {{success}}
+      </div>
     {{/if}}
     {{#if message}}
-        <div class="alert-info" role="alert">
-            {{message}}
-        </div>
+      <div class="alert-info" role="alert">
+        {{message}}
+      </div>
     {{/if}}
     {{#if error}}
-        <div class="alert-error" role="alert">
-            {{error}}
-        </div>
+      <div class="alert-error" role="alert">
+        {{error}}
+      </div>
     {{/if}}
     
     {{#if errorsValidator}}
-        <div class="alert-error" style="text-align: left;" role="alert">
-          <ul>
-            {{#each errorsValidator}}
-              <li>{{ msg }}</li>
-            {{/each}}
-          </ul>
-        </div>
+      <div class="alert-error" style="text-align: left;" role="alert">
+        <ul>
+          {{#each errorsValidator}}
+            <li>{{ msg }}</li>
+          {{/each}}
+        </ul>
+      </div>
     {{/if}}
 
     <!-- Tabs Titles -->
