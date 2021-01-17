@@ -6,9 +6,7 @@ const passport = require('passport')
 
 const staticFiles = require('../../lib/static-files-routes')
 
-const {
-	guest
-} = require('../../middleware/guest')
+const { guest } = require('../../middleware/guest')
 
 /* GET login page. */
 router.get('/', guest, function (req, res, next) {

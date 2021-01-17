@@ -18,6 +18,8 @@ const staticFiles = require('../../lib/static-files-routes')
 
 const { guest } = require('../../middleware/guest')
 
+const Verifier = require('email-verifier')
+
 /* GET register page. */
 router.get('/', guest, function (req, res, next) {
   res.render('auth/register', { title: 'Register', css: staticFiles.cssAuth })
@@ -35,25 +37,38 @@ router.post('/', guest, validatorRegister, async function (req, res, next) {
     req.flash('errorsValidator', errors.array())
     res.redirect('/register')
   } else {
-    const register = await User.create({
-      email: req.body.email,
-      username: req.body.username,
-      password: passwordEncrypt,
-      estado: false,
-      verification_code: code
+    let verifier = new Verifier(process.env.WHOISXML_API_KEY)
+    verifier.verify(req.body.email, async (err, data) => {
+      if (err) {
+        req.flash('error', 'No se ha podido verificar el correo.')
+        res.redirect('/register')
+      }
+
+      if (data.smtpCheck == 'false' || data.smtpCheck == false) {
+        req.flash('error', 'Por favor ingrese un correo válido.')
+        res.redirect('/register')
+      } else {
+        const register = await User.create({
+          email: req.body.email,
+          username: req.body.username,
+          password: passwordEncrypt,
+          estado: false,
+          verification_code: code
+        })
+      
+        const sendEmail = await send(register, 'TEST - CONFIRMA TU CORREO ✔', templateVerify)
+        
+        if(sendEmail.messageId && register.id) {
+          console.log(sendEmail.messageId)
+      
+          req.flash('message', 'Su cuenta ha sido creada con éxito, por favor verifique su correo.')
+          res.redirect('/register')
+        } else {
+          req.flash('error', 'Ha ocurrido un error al crear la cuenta de usuario, por favor intente luego.')
+          res.redirect('/register')
+        }
+      }
     })
-  
-    const sendEmail = await send(register, 'TEST - CONFIRMA TU CORREO ✔', templateVerify)
-    
-    if(sendEmail.messageId && register.id) {
-      console.log(sendEmail.messageId)
-  
-      req.flash('message', 'Su cuenta ha sido creada con éxito, por favor verifique su correo.')
-      res.redirect('/register')
-    } else {
-      req.flash('error', 'Ha ocurrido un error al crear la cuenta de usuario, por favor intente luego.')
-      res.redirect('/register')
-    }
   }
 })
 
